@@ -10,13 +10,13 @@ class Data:
             daysSchedule = GameList()
             for gameData in data["dates"][0]["games"]:
                 game = Game()
-                game.id = gameData["gamePk"]
+                game.gameId = gameData["gamePk"]
                 game.link = gameData["link"]
                 game.date = gameData["gameDate"][0:10]
                 game.time = gameData["gameDate"][11:15]
                 game.status.code = gameData["status"]["statusCode"]
                 game.status.description = gameData["status"]["detailedState"]
-                game.home.id = gameData["teams"]["home"]["team"]["id"]
+                game.home.teamId = gameData["teams"]["home"]["team"]["id"]
                 game.home.location = 'home'
                 game.home.name = gameData["teams"]["home"]["team"]["name"]
                 game.home.link = gameData["teams"]["home"]["team"]["link"]
@@ -31,7 +31,7 @@ class Data:
                 else: 
                     game.home.winner = False
                 game.home.split = gameData["teams"]["home"]["splitSquad"]
-                game.away.id = gameData["teams"]["away"]["team"]["id"]
+                game.away.teamId = gameData["teams"]["away"]["team"]["id"]
                 game.away.location = 'away'
                 game.away.name = gameData["teams"]["away"]["team"]["name"]
                 game.away.link = gameData["teams"]["away"]["team"]["link"]
@@ -50,7 +50,7 @@ class Data:
                 game.series.currentGame = gameData["seriesGameNumber"]
                 game.series.description = gameData["description"]
                 
-                print('\n' + str(game.id)) # SHOW CORRECT ID FOR THIS LOOP ITERATION
+                print('\n' + str(game.gameId)) # SHOW CORRECT ID FOR THIS LOOP ITERATION
                 
                 daysSchedule.games = daysSchedule.games[:] + [game]
 
@@ -60,7 +60,7 @@ class Data:
                 menuItems = daysSchedule.games
                 print(menuItems)
                 for testItem in menuItems:
-                    id = testItem.id
+                    testId = testItem.gameId
                     title = testItem.home.name + ' VS. ' + testItem.away.name
                     print(title)
 

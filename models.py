@@ -7,7 +7,7 @@ class Status(object):
 
 # ---------------------------------------------------------------------
 class Team(object):
-    id = ''
+    teamId = ''
     location = 'home'
     name = ''
     link = ''
@@ -30,7 +30,7 @@ class Series(object):
 
 # ---------------------------------------------------------------------
 class Venue(object):
-    id = ''
+    venueId = ''
     name = ''
     link = ''
 
@@ -38,7 +38,7 @@ class Venue(object):
 # ---------------------------------------------------------------------
 
 class Game(object):
-    id = '' 
+    gameId = '' 
     link = ''
     date = ''
     time = ''
