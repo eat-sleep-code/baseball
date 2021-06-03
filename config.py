@@ -5,8 +5,9 @@ import subprocess
 configFile = os.getcwd() + '/config.json'
 favoriteTeam = ''
 deviceType = 'pi'
+apiUrl = 'https://statsapi.mlb.com'
 scheduleUrl = 'https://statsapi.mlb.com/api/v1/schedule/games?sportId=1'
-gameDataUrl = 'http://statsapi.mlb.com/api/v1.1/game/[GAMEID]/feed/live'
+logoUrl = 'https://www.mlbstatic.com/team-logos/[TEAMID].svg'
 
 class Config:
 
@@ -14,23 +15,26 @@ class Config:
 		global configFile
 		global favoriteTeam
 		global deviceType 
+		global apiUrl
 		global scheduleUrl 
-		global gameDataUrl
+		global logoUrl
+		
 		try:	
 			with open(configFile) as configData:
 				configList = json.load(configData)
 				for configItem in configList: 
 					favoriteTeam = configItem['favoriteTeam']
 					deviceType = config['deviceType']
+					apiUrl = configItem['apiUrl']
 					scheduleUrl = configItem['scheduleUrl']
-					gameDataUrl = configItem['gameDataUrl'] 
+					logoUrl = configItem['logoUrl']
 		except:
-			Config.write(favoriteTeam, deviceType, scheduleUrl, gameDataUrl)
+			Config.write(favoriteTeam, deviceType, apiUrl, scheduleUrl, logoUrl)
 			pass
-		return(favoriteTeam, deviceType, scheduleUrl, gameDataUrl)
+		return(favoriteTeam, deviceType, apiUrl, scheduleUrl, logoUrl)
 
 
-	def write(favoriteTeam, deviceType, scheduleUrl, gameDataUrl): 
+	def write(favoriteTeam, deviceType, apiUrl, scheduleUrl, logoUrl): 
 		global configFile
 		try:
 			
@@ -38,8 +42,9 @@ class Config:
 			configList.append({
 				'favoriteTeam': str(favoriteTeam),
 				'deviceType': str(deviceType),
+				'apiUrl': str(apiUrl),
 				'scheduleUrl': str(scheduleUrl),
-				'gameDataUrl': str(gameDataUrl)
+				'logoUrl': str(logoUrl)
 			})
 
 			with open(configFile, 'w') as configData:
@@ -48,3 +53,6 @@ class Config:
 		except Exception as ex:
 			print(str(ex))
 			return False
+
+
+		

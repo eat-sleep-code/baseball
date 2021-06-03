@@ -2,7 +2,8 @@
     {
         "favoriteTeam": "",
         "deviceType": "pi",
+        "apiUrl": "https://statsapi.mlb.com",
         "scheduleUrl": "https://statsapi.mlb.com/api/v1/schedule/games?sportId=1",
-        "gameDataUrl": "http://statsapi.mlb.com/api/v1.1/game/[GAMEID]/feed/live"
+        "logoUrl": "https://www.mlbstatic.com/team-logos/[TEAMID].svg"
     }
 ]
