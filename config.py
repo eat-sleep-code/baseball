@@ -7,7 +7,8 @@ favoriteTeam = ''
 deviceType = 'pi'
 apiUrl = 'https://statsapi.mlb.com'
 scheduleUrl = 'https://statsapi.mlb.com/api/v1/schedule/games?sportId=1'
-logoUrl = 'https://www.mlbstatic.com/team-logos/[TEAMID].svg'
+logoUrl = 'https://www.mlbstatic.com/team-logos/[TEAMID].svg',
+portraitUrl = 'https://img.mlbstatic.com/mlb-photos/image/upload/w_256,q_auto:best/v1/people/[PLAYERID]/headshot/83/current'
 
 class Config:
 
@@ -18,23 +19,26 @@ class Config:
 		global apiUrl
 		global scheduleUrl 
 		global logoUrl
+		global portraitUrl
 		
 		try:	
 			with open(configFile) as configData:
 				configList = json.load(configData)
 				for configItem in configList: 
 					favoriteTeam = configItem['favoriteTeam']
-					deviceType = config['deviceType']
+					deviceType = configItem['deviceType']
 					apiUrl = configItem['apiUrl']
 					scheduleUrl = configItem['scheduleUrl']
 					logoUrl = configItem['logoUrl']
-		except:
-			Config.write(favoriteTeam, deviceType, apiUrl, scheduleUrl, logoUrl)
+					portraitUrl = configItem['portraitUrl']
+		except Exception as ex:
+			#print(ex)
+			Config.write(favoriteTeam, deviceType, apiUrl, scheduleUrl, logoUrl, portraitUrl)
 			pass
-		return(favoriteTeam, deviceType, apiUrl, scheduleUrl, logoUrl)
+		return(favoriteTeam, deviceType, apiUrl, scheduleUrl, logoUrl, portraitUrl)
 
 
-	def write(favoriteTeam, deviceType, apiUrl, scheduleUrl, logoUrl): 
+	def write(favoriteTeam, deviceType, apiUrl, scheduleUrl, logoUrl, portraitUrl): 
 		global configFile
 		try:
 			
@@ -44,7 +48,8 @@ class Config:
 				'deviceType': str(deviceType),
 				'apiUrl': str(apiUrl),
 				'scheduleUrl': str(scheduleUrl),
-				'logoUrl': str(logoUrl)
+				'logoUrl': str(logoUrl), 
+				'portraitUrl': str(portraitUrl)
 			})
 
 			with open(configFile, 'w') as configData:

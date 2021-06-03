@@ -4,6 +4,7 @@
         "deviceType": "pi",
         "apiUrl": "https://statsapi.mlb.com",
         "scheduleUrl": "https://statsapi.mlb.com/api/v1/schedule/games?sportId=1",
-        "logoUrl": "https://www.mlbstatic.com/team-logos/[TEAMID].svg"
+        "logoUrl": "https://www.mlbstatic.com/team-logos/[TEAMID].svg",
+        "portraitUrl": "https://img.mlbstatic.com/mlb-photos/image/upload/w_256,q_auto:best/v1/people/[PLAYERID]/headshot/83/current"
     }
 ]

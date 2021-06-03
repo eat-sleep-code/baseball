@@ -1,14 +1,6 @@
-import datetime
-import json
-import sys
-import requests
+from game import Game
 from menu import Menu
 
+#Menu.createMenu()
 
-global favoriteTeam
-global deviceType 
-global scheduleUrl 
-global gameDataUrl
-
-Menu.createMenu()
-
+Game.getCurrentPlay()
