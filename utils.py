@@ -1,4 +1,5 @@
 import time
+import base64
 from datetime import datetime, timedelta
 
 now = datetime.now() 
@@ -12,3 +13,10 @@ class Date:
         return adjustedDate
 
     
+
+class Image:
+
+    def WebImageToBase64(url):
+        imageBytes = urlopen(url).read()
+        imageBase64 = base64.encodestring(imageBytes)
+        return imageBase64
