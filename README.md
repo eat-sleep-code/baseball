@@ -8,5 +8,5 @@
 
 *Other trademarks used throughout this repository are the property of their respective owners and are used for identification purposes only.*
 
-*You may not hold the owners and operators (or any associated parties) of the <eat-sleep-code /> websites and repositories liable or financially responsible for any damages including—but not limited to—emotional, physical, or financial damages incurred during or after the use of this repository or any referenced websites. Use of this repository and/or the code found within constitutes an agreement to these terms.*
+*You may not hold the owners and operators (or any associated parties) of the &lt;eat-sleep-code /&gt; websites and repositories liable or financially responsible for any damages including—but not limited to—emotional, physical, or financial damages incurred—by yourself or any other party—during or after the use of this repository or any referenced websites. Use of this repository and/or the code found within constitutes an agreement to these terms.*
 
