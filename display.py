@@ -8,6 +8,9 @@ currentDirectory = os.getcwd() + '/baseball/'
 
 class Display:
 
+    def clear(canvas):
+        canvas.delete("all")
+    
     def showSplash(canvas):
         global currentDirectory
         canvas.delete("all")
@@ -20,3 +23,4 @@ class Display:
 		# exitButton.place(x=borderLeft,y=0,width=buttonWidth,height=buttonHeight)
 
 
+        
