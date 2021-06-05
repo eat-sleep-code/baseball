@@ -1,7 +1,9 @@
-import time
 import base64
-from datetime import datetime, timedelta
+import cairosvg
+import io
+import time
 import urllib
+from datetime import datetime, timedelta
 
 now = datetime.now() 
 
@@ -17,9 +19,17 @@ class Date:
 
 class Image:
 
-    def WebImageToBase64(url):
-        request = urllib.request.Request(url, headers={'User-Agent': "Baseball Pi"})
+    def WebImageToBase64(imageUrl):
+        request = urllib.request.Request(imageUrl, headers={'User-Agent': "Baseball Pi"})
         connection = urllib.request.urlopen(request)
         imageBytes = connection.read()
         imageBase64 = base64.encodestring(imageBytes)
         return imageBase64
+
+    def SVGtoPNG(imageUrl):
+        request = urllib.request.Request(imageUrl, headers={'User-Agent': "Baseball Pi"})
+        connection = urllib.request.urlopen(request)
+        imageBytes = connection.read().decode('utf-8')
+        pngData = cairosvg.svg2png(bytestring=imageBytes, unsafe=True)
+        print(pngData)
+        pngBytes = io.BytesIO(pngData)
