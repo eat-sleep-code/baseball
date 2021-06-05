@@ -1,8 +1,11 @@
 from data import Data
 
 class Menu:
-    
-    def createMenu():
+    def __init__(self, canvas):
+        self.canvas = canvas
+
+    def createMenu(self):
+
         menuItems = Data.getSchedule().games
         
         for item in menuItems:
