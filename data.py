@@ -25,7 +25,7 @@ class Data:
             if len(dataSource) > 0:
                 i = 0
                 for gameData in dataSource:
-                    gameDate = Date.UTCtoLocal(gameData['gameDate'])
+                    gameDate = Date.utcToLocal(gameData['gameDate'])
                     i = i + 1
                     game = Game()
                     game.sequentialId = i

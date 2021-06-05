@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 import time
 import globals
+from utils import Image as imageUtils
 from game import Game
 from menu import CreateMenu
 from display import Clear, ShowSplash
@@ -14,11 +15,12 @@ def PlayBall():
     app.wm_attributes('-type', 'splash')
     app.geometry(str(app.winfo_screenwidth()) + 'x' + str(app.winfo_screenheight()) + '+0+0')    
     app['background'] = '#000000'
-    canvas = Canvas(app, width = app.winfo_screenwidth(), height = app.winfo_screenheight())
+    canvas = Canvas(app, bg = '#000000', width = app.winfo_screenwidth(), height = app.winfo_screenheight())
     canvas.pack()
 
     
     if globals.splashDisplayed == False:
+        imageUtils.emptyCache()
         showSplash = ShowSplash(canvas)
         app.update()
         splashDisplayed = True
@@ -46,6 +48,6 @@ try:
     playBall = PlayBall()
 
 except KeyboardInterrupt:
-	echoOn()
-	sys.exit(1)
+    app.destroy()
+    sys.exit(1)
 

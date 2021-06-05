@@ -1,3 +1,5 @@
+import os
+
 def initialize():
     global splashDisplayed
     splashDisplayed = False
@@ -7,3 +9,6 @@ def initialize():
 
     global gameInProgress
     gameInProgress = False
+
+    global imageCache
+    imageCache = os.getcwd() + '/images/cache/'

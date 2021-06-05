@@ -20,6 +20,7 @@ sudo git clone https://github.com/eat-sleep-code/baseball
 sudo chown -R $USER:$USER baseball
 cd baseball
 sudo chmod +x baseball.py
+mkdir -p images/cache
 
 cd ~
 echo ''
