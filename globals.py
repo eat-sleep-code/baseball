@@ -1,14 +1,25 @@
 import os
+from pathlib import Path
 
 def initialize():
-    global splashDisplayed
-    splashDisplayed = False
-    
-    global gameSelected
-    gameSelected = False
+	global homePath
+	homePath = '/home/pi/source/baseball'
+	os.chdir(homePath)
 
-    global gameInProgress
-    gameInProgress = False
+	global splashDisplayed
+	splashDisplayed = False
+	
+	global gameSelected
+	gameSelected = False
 
-    global imageCache
-    imageCache = os.getcwd() + '/images/cache/'
+	global gameInProgress
+	gameInProgress = False
+
+	global imageCache
+	imageCache = str(homePath + '/images/cache/')
+	
+	global screenWidth
+	screenWidth = 1920
+
+	global screenHeight
+	screenHeight = 1080

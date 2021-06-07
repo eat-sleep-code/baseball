@@ -1,8 +1,9 @@
 import json
 import os
 import subprocess
+from pathlib import Path
 
-configFile = os.getcwd() + '/config.json'
+configFile = str(Path(__file__).parent.resolve()) + '/config.json'
 favoriteTeam = ''
 deviceType = 'pi'
 apiUrl = 'https://statsapi.mlb.com'

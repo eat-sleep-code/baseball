@@ -1,4 +1,5 @@
 import globals
+import os
 from data import Data
 from utils import Image as imageUtils
 import tkinter as tk
@@ -6,110 +7,100 @@ from tkinter import ttk
 from PIL import Image, ImageTk
 
 class CreateMenu(tk.Canvas):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        
-        #self.bind('Click')
-        
-        menuItems = Data.getSchedule().games
-        x = 0 
-        y = 0
-        buttonWidth = 960
-        buttonHeight = 100
-        currentRow = 0
-        currentColumn = 0
-
-        buttonStyle = ttk.Style()
-        buttonStyle.configure('default.TButton', background = '#FFFFFF', bordercolor = '#FFFFFF', borderwidth=0)
+	def __init__(self, *args, **kwargs):
+		super().__init__(*args, **kwargs)
 		
-
-        for item in menuItems:
-            self.canvas = tk.Canvas(self, width = 1920, height = 1080)
-            self.canvas.pack()
-            self.childFrame = tk.Frame(self.canvas, width=buttonWidth, height=buttonHeight)
-            self.childFrame.grid(row=currentRow, column=currentColumn)
-            print(currentRow, currentColumn)
-            
-            #sequentialId = item.sequentialId
+		#self.bind('Click')
+		
+		menuItems = Data.getSchedule().games
+		x = 0 
+		y = 0
+		desiredColumns = 3
+		buttonWidth = globals.screenWidth / desiredColumns
+		buttonHeight = 100
+		buttonBorder = 1
+		thumbnailWidth = 50
+		thumbnailHeight = 50
+		
+		buttonStyle = ttk.Style()
+		buttonStyle.configure('default.TButton', background = '#FFFFFF', bordercolor = '#FFFFFF', borderwidth=0, font=('Helvetica', 14))	
+	
+		self.canvas = tk.Canvas(self, bg = '#00DD00', width = globals.screenWidth, height = globals.screenHeight)
+		self.image = Image.open(os.path.join(globals.homePath, 'images/menu-background.jpg'))
+		self.splashScreenImage = ImageTk.PhotoImage(self.image)
+		self.canvas.create_image(0, 0, anchor='nw', image=self.splashScreenImage)
+		self.canvas.pack()
+			
+		for item in menuItems:
+			self.childFrame = tk.Frame(self.canvas, width=buttonWidth - 1, height=buttonHeight, bg='#FF0000')
+			#self.childFrame.grid(row=currentRow, column=currentColumn)
+			#print(currentRow, currentColumn)
+			
+			#sequentialId = item.sequentialId
 
 # ---------------------------------------------------------------------
-
-            self.awayLogo = imageUtils.webImage(item.away.logo)
-            self.awayLogoImage = ImageTk.PhotoImage(Image.open(self.awayLogo))
-            self.awayLogoButton = ttk.Button(self.childFrame, compound=tk.CENTER, image=self.awayLogoImage, command=lambda link=item.link: selectGame(link))
-            self.awayLogoButton['style'] = 'default.TButton'
-            self.awayLogoButton.pack()
-            self.awayLogoButton.place(x=0,y=0,width=120,height=120)
-            
-            self.awayNameButton = ttk.Button(self.childFrame, text=item.away.name, command=lambda link=item.link: selectGame(link))
-            self.awayNameButton['style'] = 'default.TButton'
-            self.awayNameButton.pack()
-            self.awayNameButton.place(x=10,y=10,width=buttonWidth,height=buttonHeight)
-            
-            self.awayWinsButton = ttk.Button(self.childFrame, text=item.away.wins, command=lambda link=item.link: selectGame(link))
-            self.awayWinsButton['style'] = 'default.TButton'
-            self.awayWinsButton.pack()
-            self.awayWinsButton.place(x=400,y=10,width=buttonWidth,height=buttonHeight)
-            
-            self.awayLossesButton = ttk.Button(self.childFrame, text=item.away.losses, command=lambda link=item.link: selectGame(link))
-            self.awayLossesButton['style'] = 'default.TButton'
-            self.awayLossesButton.pack()
-            self.awayLossesButton.place(x=400,y=10,width=buttonWidth,height=buttonHeight)
-            
+			self.awayLogo = imageUtils.webImage(item.away.logo)
+			print(self.awayLogo)
+			self.awayLogoImage = ImageTk.PhotoImage(Image.open(self.awayLogo), format='png', width=thumbnailWidth, height=thumbnailHeight)
+			self.awayLogoButton = ttk.Button(self.childFrame, compound=tk.CENTER, image=self.awayLogoImage, command=lambda link=item.link: selectGame(link))
+			self.awayLogoButton.pack()
+			self.awayLogoButton.place(x=0,y=0,width=thumbnailWidth,height=thumbnailHeight)
+			
+			self.awayNameButton = ttk.Button(self.childFrame, text=item.away.name, command=lambda link=item.link: selectGame(link))
+			self.awayNameButton['style'] = 'default.TButton'
+			self.awayNameButton.pack()
+			self.awayNameButton.place(x=thumbnailWidth + 30,y=0,height=buttonHeight/2)
+			
+			self.awayWinLossButton = ttk.Button(self.childFrame, text=str(item.away.wins) + ' - ' + str(item.away.losses), command=lambda link=item.link: selectGame(link))
+			self.awayWinLossButton['style'] = 'default.TButton'
+			self.awayWinLossButton.pack()
+			self.awayWinLossButton.place(x=thumbnailWidth + 230,y=0,height=buttonHeight/2)
+			
 # ---------------------------------------------------------------------
 
-            self.homeLogo = imageUtils.webImage(item.home.logo)
-            self.homeLogoImage = ImageTk.PhotoImage(Image.open(self.homeLogo))
-            self.homeLogoButton = ttk.Button(self.childFrame, compound=tk.CENTER, image=self.homeLogoImage, command=lambda link=item.link: selectGame(link))
-            self.homeLogoButton['style'] = 'default.TButton'
-            self.homeLogoButton.pack()
-            self.homeLogoButton.place(x=0,y=110,width=120,height=120)
-            
-            self.homeNameButton = ttk.Button(self.childFrame, text=item.home.name, command=lambda link=item.link: selectGame(link))
-            self.homeNameButton['style'] = 'default.TButton'
-            self.homeNameButton.pack()
-            self.homeNameButton.place(x=10,y=120,width=buttonWidth,height=buttonHeight)
-            
-            self.homeWinsButton = ttk.Button(self.childFrame, text=item.home.wins, command=lambda link=item.link: selectGame(link))
-            self.homeWinsButton['style'] = 'default.TButton'
-            self.homeWinsButton.pack()
-            self.homeWinsButton.place(x=400,y=120,width=buttonWidth,height=buttonHeight)
-            
-            self.homeLossesButton = ttk.Button(self.childFrame, text=item.home.losses, command=lambda link=item.link: selectGame(link))
-            self.homeLossesButton['style'] = 'default.TButton'
-            self.homeLossesButton.pack()
-            self.homeLossesButton.place(x=400,y=120,width=buttonWidth,height=buttonHeight)
-            
+			self.homeLogo = imageUtils.webImage(item.home.logo)
+			print(self.homeLogo)
+			self.homeLogoImage = ImageTk.PhotoImage(Image.open(self.homeLogo), format='png', width=thumbnailWidth, height=thumbnailHeight)
+			self.homeLogoButton = ttk.Button(self.childFrame, compound=tk.CENTER, image=self.homeLogoImage, command=lambda link=item.link: selectGame(link))
+			self.homeLogoButton.pack()
+			self.homeLogoButton.place(x=0,y=thumbnailHeight,width=thumbnailWidth,height=thumbnailHeight)
+			
+			self.homeNameButton = ttk.Button(self.childFrame, text=item.home.name, command=lambda link=item.link: selectGame(link))
+			self.homeNameButton['style'] = 'default.TButton'
+			self.homeNameButton.pack()
+			self.homeNameButton.place(x=thumbnailWidth + 30,y=thumbnailHeight,height=buttonHeight/2)
+			
+			self.homeWinLossButton = ttk.Button(self.childFrame, text=str(item.home.wins) + ' - ' + str(item.home.losses), command=lambda link=item.link: selectGame(link))
+			self.homeWinLossButton['style'] = 'default.TButton'
+			self.homeWinLossButton.pack()
+			self.homeWinLossButton.place(x=thumbnailWidth + 230,y=thumbnailHeight,height=buttonHeight/2)
+			
+	
+			
 # ---------------------------------------------------------------------
-            
-            self.timezoneButton = ttk.Button(self.childFrame, text=item.time + ' ' + str(item.timezone), command=lambda link=item.link: selectGame(link))
-            self.timezoneButton['style'] = 'default.TButton'
-            self.timezoneButton.pack()
-            #self.homeLossesButton.place(x=borderLeft,y=0,width=buttonWidth,height=buttonHeight)
-            
+			
+			self.startTimeButton = ttk.Button(self.childFrame, text=item.time + ' ' + str(item.timezone), command=lambda link=item.link: selectGame(link))
+			self.startTimeButton['style'] = 'default.TButton'
+			self.startTimeButton.pack()
+			self.startTimeButton.place(x=thumbnailWidth + 350,y=0,height=buttonHeight)
+			
 # ---------------------------------------------------------------------
-                    
-            self.childFrame.bind("<Return>", lambda event, link=item.link: selectGame(link))
-            self.childFrame.focus_set()
+					
+			self.childFrame.bind("<Return>", lambda event, link=item.link: selectGame(link))
+			self.childFrame.focus_set()
 
-            
-            
-            # Set position of next button...
-            if currentColumn == 0:
-                currentColumn = 1
-            else: 
-                currentColumn = 0
-                currentRow += 1
-            
+			self.childFrame.pack(ipady = 1)
+			self.childFrame.place(x = x, y = y)
+			
+			if (x == (globals.screenWidth - buttonWidth)):
+				x = 0
+				y = y + buttonHeight + 1
+			else:
+				x = x + buttonWidth
+			#print(x, y)
+			
 
-            #if (x + buttonWidth) == buttonWidth:
-            #    x = x * 2
-            #else:
-            #    x = 0
-            #y = y + buttonHeight
-
-
-        def selectGame(link):
-            globals.gamesSelected = True
-            print(globals.gamesSelected)
-            print('Clicked: ' + link)
+		def selectGame(link):
+			globals.gamesSelected = True
+			print(globals.gamesSelected)
+			print('Clicked: ' + link)

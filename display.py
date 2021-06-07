@@ -1,3 +1,4 @@
+import globals
 import os
 import time
 import tkinter as tk
@@ -14,7 +15,7 @@ class ShowSplash:
     def __init__(self, canvas):
         Clear(canvas)
         self.canvas = canvas
-        self.image = Image.open(os.path.join(os.getcwd(), 'images/splash-screen.jpg'))
+        self.image = Image.open(os.path.join(globals.homePath, 'images/splash-screen.jpg'))
         self.splashScreenImage = ImageTk.PhotoImage(self.image)
         self.canvas.create_image(0, 0, anchor='nw', image=self.splashScreenImage)
 

@@ -19,6 +19,7 @@ class Data:
         localTimezone = datetime.utcnow().astimezone().tzinfo
         with urllib.request.urlopen(scheduleUrl) as request:
             data = json.loads(request.read().decode())
+            #print(data)
             schedule = GameList()
             schedule.games.clear()
             dataSource = data['dates'][0]['games']
