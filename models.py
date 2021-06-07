@@ -42,6 +42,10 @@ class Game(object):
         self.time = '12:00'
         self.timezone = 'UTC'
         self.status = Status()
+        self.basePattern = ''
+        self.inning = 0
+        self.inningHalf = 'top'
+        self.outs = 0
         self.home = Team()
         self.away = Team()
         self.series = Series()
