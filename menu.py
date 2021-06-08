@@ -12,6 +12,7 @@ class CreateMenu(tk.Canvas):
 
 		menuItems = Data.getSchedule().games
 		self.tk_images = []
+		self.tk_images.clear()
 
 # ---------------------------------------------------------------------
 
@@ -38,12 +39,13 @@ class CreateMenu(tk.Canvas):
 		buttonStyle.map('default.Tbutton', background=[('!active', '#FFFFFF')])
 	
 # ---------------------------------------------------------------------
-
 		self.canvas = tk.Canvas(self, bg = '#000000', width = globals.screenWidth, height = globals.screenHeight)
+		
 		self.image = Image.open(os.path.join(globals.homePath, 'images/menu-background.jpg'))
 		self.splashScreenImage = ImageTk.PhotoImage(self.image)
 		self.canvas.create_image(0, 0, anchor='nw', image=self.splashScreenImage)
 		self.canvas.pack()
+			
 			
 		for item in menuItems:
 			self.childFrame = tk.Frame(self.canvas, width=(buttonWidth - padding), height=buttonHeight, bg='#888888')
@@ -101,39 +103,51 @@ class CreateMenu(tk.Canvas):
 				
 # ---------------------------------------------------------------------
 			
+			lastColumnStart = thumbnailWidth + teamTextWidth + scoreTextWidth + 1
+			lastColumnWidth = buttonWidth - thumbnailWidth - teamTextWidth - scoreTextWidth - padding - 1
 			if item.status.code == 'F':
 				# FINAL Indicator
 				self.gameStatusButton = ttk.Button(self.childFrame, text='Final', command=lambda link=item.link: selectGame(link))
 				self.gameStatusButton['style'] = 'default.TButton'
-				self.gameStatusButton.place(x=thumbnailWidth + teamTextWidth + scoreTextWidth + 1, y=0, height=buttonHeight, width=(buttonWidth - thumbnailWidth - teamTextWidth - scoreTextWidth - padding - 1))
+				self.gameStatusButton.place(x=lastColumnStart, y=0, width=lastColumnWidth, height=buttonHeight)
 			elif item.status.code == 'I':
 				# Inning
+				
 				if (item.inningHalf == 'bottom'):
-					inningIndicator = u"\u25B2 " + str(item.inning)
-				else:
 					inningIndicator = u"\u25BC " + str(item.inning)
+				else:
+					inningIndicator = u"\u25B2 " + str(item.inning)
 				self.gameStatusButton = ttk.Button(self.childFrame, text=inningIndicator, command=lambda link=item.link: selectGame(link))
 				self.gameStatusButton['style'] = 'default.TButton'
-				self.gameStatusButton.place(x=thumbnailWidth + teamTextWidth + scoreTextWidth + 1, y=0, height=buttonHeight/3, width=(buttonWidth - thumbnailWidth - teamTextWidth - scoreTextWidth - padding - 1))
+				self.gameStatusButton.place(x=lastColumnStart, y=0, width=lastColumnWidth, height=buttonHeight/4)
 				
 				# Base Pattern
-				self.basePatternImage = ImageTk.PhotoImage(os.path.join(globals.homePath, 'images/bases/', item.basePattern, '.png'), format='png', width=thumbnailWidth, height=thumbnailHeight)
+				basePatternHeight = int(buttonHeight/2) - 10
+				basePatternWidth = int(basePatternHeight * 1.5)
+				print(item.basePattern)
+				self.basePatternImageFile = Image.open(os.path.join(globals.homePath, 'images/bases/', item.basePattern + '.png'))
+				self.basePatternImageFile = self.basePatternImageFile.resize((basePatternWidth, basePatternHeight), Image.ANTIALIAS) 
+				self.basePatternImage = ImageTk.PhotoImage(self.basePatternImageFile, format='png', width=basePatternWidth, height=basePatternHeight)
 				self.basePatternButton = ttk.Button(self.childFrame, compound=tk.CENTER, image=self.basePatternImage, command=lambda link=item.link: selectGame(link))
 				self.basePatternButton['style'] = 'default.TButton'
-				self.basePatternButton.place(x=0, y=buttonHeight/3, width=thumbnailWidth, height=thumbnailHeight)
+				self.basePatternButton.place(x=lastColumnStart, y=buttonHeight/4, width=lastColumnWidth, height=buttonHeight/2)
 				self.tk_images.append(self.basePatternImage)
 
 				# Outs
-				self.outImage = ImageTk.PhotoImage(os.path.join(globals.homePath, 'images/outs/', str(item.outs), '.png'), format='png', width=thumbnailWidth, height=thumbnailHeight)
+				outHeight = int(buttonHeight/4) - 10
+				outWidth = int(outHeight * 3)
+				self.outImageFile = Image.open(os.path.join(globals.homePath, 'images/outs/', str(item.outs) + '.png'))
+				self.outImageFile = self.outImageFile.resize((outWidth, outHeight), Image.ANTIALIAS) 
+				self.outImage = ImageTk.PhotoImage(self.outImageFile, format='png', width=outWidth, height=outHeight)
 				self.outButton = ttk.Button(self.childFrame, compound=tk.CENTER, image=self.outImage, command=lambda link=item.link: selectGame(link))
 				self.outButton['style'] = 'default.TButton'
-				self.outButton.place(x=0, y=buttonHeight/3, width=thumbnailWidth, height=thumbnailHeight)
-				self.tk_images.append(self.outButton)
+				self.outButton.place(x=lastColumnStart, y=(buttonHeight/4 * 3), width=lastColumnWidth, height=buttonHeight/4)
+				self.tk_images.append(self.outImage)
 			else:
 				# Standings
 				self.gameStatusButton = ttk.Button(self.childFrame, text=item.time + ' ' + str(item.timezone), command=lambda link=item.link: selectGame(link))
 				self.gameStatusButton['style'] = 'default.TButton'
-				self.gameStatusButton.place(x=thumbnailWidth + teamTextWidth + scoreTextWidth + 1, y=0, height=buttonHeight, width=(buttonWidth - thumbnailWidth - teamTextWidth - scoreTextWidth - padding - 1))
+				self.gameStatusButton.place(x=lastColumnStart, y=0, width=lastColumnWidth, height=buttonHeight)
 			
 # ---------------------------------------------------------------------
 					
@@ -150,7 +164,6 @@ class CreateMenu(tk.Canvas):
 			else:
 				x = x + buttonWidth
 			#print(x, y)
-			
 
 		def selectGame(link):
 			globals.gamesSelected = True
