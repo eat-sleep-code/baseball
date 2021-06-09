@@ -9,7 +9,7 @@ def initialize():
 	
 	global pollRate
 	pollRate = 10
-	
+
 	global screenWidth
 	screenWidth = 1920
 
@@ -36,5 +36,8 @@ def initialize():
 
 	global imageCache
 	imageCache = str(homePath + '/images/cache/')
+
+	global buttonCollection
+	buttonCollection = []
 	
 	

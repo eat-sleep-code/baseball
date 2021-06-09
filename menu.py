@@ -3,6 +3,7 @@ import os
 import pygame
 import time
 from data import Data
+from models import Button
 from utils import Image as imageUtils
 from PIL import Image
 
@@ -47,6 +48,7 @@ class CreateMenu:
 			# ---------------------------------------------------------------------
 			
 			menuItems = Data.getSchedule().games
+			tempButtonCollection = []
 			if len(menuItems) == 0:
 				print('Awaiting game data...')
 			else:
@@ -58,13 +60,11 @@ class CreateMenu:
 					itemYAlt = y + thumbnailHeight
 
 					gameRectangle = pygame.draw.rect(globals.displaySurface, (255, 255, 255), [itemX, itemY, buttonWidth, buttonHeight])
-					#for event in pygame.event.get():
-						#if event.type == 1:
-							#print(pygame.mouse.get_pos())
-							#if gameRectangle.collidepoint():
-							#	print('Clicked', item.away.name)
+					button = Button()
 					
 					
+					
+					#global.buttonCollection.append(itemX, itemY, buttonWidth, buttonHeight, item.link)
 
 					# ---------------------------------------------------------------------
 

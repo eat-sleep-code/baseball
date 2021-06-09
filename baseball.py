@@ -16,7 +16,17 @@ from display import Clear, ShowSplash
 #os.putenv('SDL_MOUSEDRV', 'TSLIB')
 #os.putenv('SDL_MOUSEDEV', '/dev/input/touchscreen')
 
-def PlayBall():
+
+def buttonHandler():
+	print('Button Handler')
+	#for event in pygame.event.get():
+		#if event.type == 1:
+			#print(pygame.mouse.get_pos())
+			#if gameRectangle.collidepoint():
+			#	print('Clicked', item.away.name)
+
+
+def playBall():
 	try:
 		globals.initialize()
 			
@@ -37,5 +47,5 @@ def PlayBall():
 		sys.exit(1)
 		
 
-playBall = PlayBall()
+playBall()
 

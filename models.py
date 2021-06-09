@@ -1,5 +1,6 @@
 from datetime import datetime
 
+
 class Bases(object):
     def __init__(self):
         self.first = False
@@ -10,6 +11,17 @@ class Bases(object):
         self.onThird = Player()
         self.home = False
         self.scored = Player()
+
+# ---------------------------------------------------------------------
+
+class Button(object):
+    def __init__(self):
+        self.left = 0
+        self.top = 0
+        self.width = 0
+        self.height = 0
+        self.buttonType = ''
+        self.buttonValue = ''
 
 # ---------------------------------------------------------------------
 
