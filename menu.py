@@ -94,7 +94,7 @@ class CreateMenu:
 					
 					columnStart = itemX + thumbnailWidth + teamTextWidth
 
-					if item.status.code == 'I' or item.status.code == 'F':
+					if item.status.code == 'I' or item.status.code == 'F' or item.status.code == 'O':
 						awayScoreText = scoreFont.render(str(item.away.runs), True, (0, 0, 0))
 						globals.displaySurface.blit(awayScoreText, (columnStart, itemY + 14 ))
 
@@ -111,7 +111,7 @@ class CreateMenu:
 						
 					columnStart = itemX + thumbnailWidth + teamTextWidth + scoreTextWidth
 
-					if item.status.code == 'F':
+					if item.status.code == 'F' or item.status.code == 'O':
 						# FINAL Indicator
 						finalText = defaultFont.render('Final', True, (0, 0, 0))
 						globals.displaySurface.blit(finalText, (columnStart + 20, itemYAlt - 10 ))
