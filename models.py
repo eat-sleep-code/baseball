@@ -16,12 +16,10 @@ class Bases(object):
 
 class Button(object):
     def __init__(self):
-        self.left = 0
-        self.top = 0
-        self.width = 0
-        self.height = 0
-        self.buttonType = ''
-        self.buttonValue = ''
+        self.rect = None
+        self.type = ''
+        self.value = ''
+        self.active = False
 
 # ---------------------------------------------------------------------
 

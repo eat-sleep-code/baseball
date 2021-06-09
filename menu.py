@@ -61,7 +61,14 @@ class CreateMenu:
 
 					gameRectangle = pygame.draw.rect(globals.displaySurface, (255, 255, 255), [itemX, itemY, buttonWidth, buttonHeight])
 					button = Button()
-					
+					button.rect = gameRectangle
+					button.type = 'schedule'
+					button.value = item.link
+					if item.status.code == 'I':
+						button.active = True
+					else:
+						button.active = False
+					tempButtonCollection.append(button)
 					
 					
 					#global.buttonCollection.append(itemX, itemY, buttonWidth, buttonHeight, item.link)
@@ -155,6 +162,8 @@ class CreateMenu:
 						x = itemX + buttonWidth + padding
 					#print('X:', x, 'Y:', y)
 
+				globals.buttonCollection.clear()
+				globals.buttonCollection = tempButtonCollection
 				pygame.display.flip()
 				time.sleep(5)		
 				

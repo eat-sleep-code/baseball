@@ -3,6 +3,7 @@ import globals
 import os
 import pygame
 import sys
+import threading
 import time
 
 from utils import Image as imageUtils
@@ -16,15 +17,23 @@ from display import Clear, ShowSplash
 #os.putenv('SDL_MOUSEDRV', 'TSLIB')
 #os.putenv('SDL_MOUSEDEV', '/dev/input/touchscreen')
 
+#--------------------------------------------------------------------------
 
 def buttonHandler():
-	print('Button Handler')
-	#for event in pygame.event.get():
-		#if event.type == 1:
-			#print(pygame.mouse.get_pos())
-			#if gameRectangle.collidepoint():
-			#	print('Clicked', item.away.name)
+	while True:
+		#print('Buttons: ', len(globals.buttonCollection))
+		for event in pygame.event.get():
+			if event.type == pygame.MOUSEBUTTONDOWN:
+				for button in globals.buttonCollection:
+					rect = button.rect
+					if rect.collidepoint(event.pos):
+						if button.type == 'schedule' and button.active == True:
+							globals.gameInProgress = True
+							globals.gameSelected = True
+							globals.gameLink = button.value
+				
 
+#--------------------------------------------------------------------------
 
 def playBall():
 	try:
@@ -36,6 +45,8 @@ def playBall():
 			globals.splashDisplayed = True
 			time.sleep(5)
 
+		buttonHandlerThread = threading.Thread(target=buttonHandler)
+		buttonHandlerThread.start()
 		while True:
 			if globals.gameSelected == True and globals.gameInProgress == True:
 				print('Showing Game')
@@ -46,6 +57,7 @@ def playBall():
 	except KeyboardInterrupt:
 		sys.exit(1)
 		
+#--------------------------------------------------------------------------
 
 playBall()
 

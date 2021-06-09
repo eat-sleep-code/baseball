@@ -34,6 +34,9 @@ def initialize():
 	global gameInProgress
 	gameInProgress = False
 
+	global gameLink
+	gameLink = ''
+
 	global imageCache
 	imageCache = str(homePath + '/images/cache/')
 
