@@ -114,7 +114,7 @@ class CreateMenu:
 					if item.status.code == 'F':
 						# FINAL Indicator
 						finalText = defaultFont.render('Final', True, (0, 0, 0))
-						globals.displaySurface.blit(finalText, (columnStart, itemYAlt - 10 ))
+						globals.displaySurface.blit(finalText, (columnStart + 20, itemYAlt - 10 ))
 					elif item.status.code == 'I':
 						
 						# Base Pattern
