@@ -14,8 +14,7 @@ class CreateMenu:
 		pygame.display.set_caption(globals.title + ' > Today\'s Games')
 		
 		displayWidth, displayHeight = pygame.display.get_surface().get_size()
-		#menuItemsSurface = pygame.Surface((int(displayWidth), int(displayHeight)))
-
+		
 # ---------------------------------------------------------------------
 		
 		defaultFont = pygame.font.SysFont('Helvetica', 16, bold=False)

@@ -122,7 +122,7 @@ class Data:
 		global apiUrl
 		global scheduleUrl
 		global logoUrl
-		with urllib.request.urlopen(apiUrl + gameLink) as request:
+		with urllib.request.urlopen(gameLink) as request:
 			data = json.loads(request.read().decode())
 			playData = data
 			awayScore = playData['liveData']['plays']['currentPlay']['result']['awayScore']

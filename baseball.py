@@ -7,7 +7,7 @@ import threading
 import time
 
 from utils import Image as imageUtils
-from game import Game
+from game import ViewGame
 from menu import CreateMenu
 from display import Clear, ShowSplash
 
@@ -49,8 +49,7 @@ def playBall():
 		buttonHandlerThread.start()
 		while True:
 			if globals.gameSelected == True and globals.gameInProgress == True:
-				print('Showing Game')
-				#showGame = Game(canvas).getCurrentPlay()
+				showGame = ViewGame()
 			else:
 				menu = CreateMenu()
 		
