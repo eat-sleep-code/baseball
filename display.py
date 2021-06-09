@@ -1,21 +1,18 @@
 import globals
 import os
+import pygame
 import time
-import tkinter as tk
-from tkinter import ttk
-from PIL import Image, ImageTk
+
 
 class Clear:
-    def __init__(self, canvas):
-        self.canvas = canvas
-        canvas.delete("all")
-
+    def __init__(self):
+        globals.displaySurface.fill((0, 0, 0))
+        pygame.display.update()
 
 class ShowSplash:
-    def __init__(self, canvas):
-        Clear(canvas)
-        self.canvas = canvas
-        self.image = Image.open(os.path.join(globals.homePath, 'images/splash-screen.jpg'))
-        self.splashScreenImage = ImageTk.PhotoImage(self.image)
-        self.canvas.create_image(0, 0, anchor='nw', image=self.splashScreenImage)
-
+    def __init__(self):
+        pygame.display.set_caption(globals.title)
+        splashImagePath = os.path.join(globals.homePath, 'images/splash-screen.jpg')
+        splashImage = pygame.image.load(splashImagePath)
+        globals.displaySurface.blit(splashImage, (0, 0))
+        pygame.display.update()

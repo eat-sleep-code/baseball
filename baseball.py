@@ -1,48 +1,39 @@
 #!/usr/bin/python3
-import time
-import sys
 import globals
+import os
+import pygame
+import sys
+import time
+
 from utils import Image as imageUtils
 from game import Game
 from menu import CreateMenu
 from display import Clear, ShowSplash
-import tkinter as tk
-from tkinter import ttk, Canvas
+
+
+#os.putenv('SDL_VIDEODRIVER', 'fbcon')
+#os.putenv('SDL_FBDEV', '/dev/fb1')
+#os.putenv('SDL_MOUSEDRV', 'TSLIB')
+#os.putenv('SDL_MOUSEDEV', '/dev/input/touchscreen')
 
 def PlayBall():
 	try:
 		globals.initialize()
-		app = tk.Tk()
-		app.title('Baseball')
-		app.wm_attributes('-type', 'splash')
-		globals.screenWidth = app.winfo_screenwidth()
-		globals.screenHeight = app.winfo_screenheight()
-		app.geometry(str(globals.screenWidth) + 'x' + str(globals.screenHeight) + '+0+0')    
-		app['background'] = '#000000'
-		canvas = Canvas(app, bg = '#000000', width = globals.screenWidth, height = globals.screenHeight)
-		canvas.pack()
 			
 		if globals.splashDisplayed == False:
 			imageUtils.emptyCache()
-			showSplash = ShowSplash(canvas)
-			app.update()
+			showSplash = ShowSplash()
 			globals.splashDisplayed = True
 			time.sleep(5)
 
 		while True:
 			if globals.gameSelected == True and globals.gameInProgress == True:
-				clear = Clear(canvas)
+				print('Showing Game')
 				#showGame = Game(canvas).getCurrentPlay()
 			else:
-				clear = Clear(canvas)
-				showMenu = CreateMenu(canvas)
-				showMenu.pack(fill='both', expand=True)
-			app.update()
-			time.sleep(1)
-			
-
+				menu = CreateMenu()
+		
 	except KeyboardInterrupt:
-		app.destroy()
 		sys.exit(1)
 		
 

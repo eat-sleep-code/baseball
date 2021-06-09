@@ -1,169 +1,172 @@
 import globals
 import os
+import pygame
+import time
 from data import Data
 from utils import Image as imageUtils
-import tkinter as tk
-from tkinter import ttk
-from PIL import Image, ImageTk
+from PIL import Image
 
-class CreateMenu(tk.Canvas):
-	def __init__(self, *args, **kwargs):
-		super().__init__(*args, **kwargs)
-
-		menuItems = Data.getSchedule().games
-		self.tk_images = []
-		self.tk_images.clear()
-
-# ---------------------------------------------------------------------
-
-		padding = 72
-		x = padding
-		y = padding 
-		desiredColumns = 3
-		thumbnailWidth = 64
-		thumbnailHeight = 64
-		buttonWidth = (globals.screenWidth - padding) / desiredColumns 
-		buttonHeight = thumbnailHeight * 2
-		buttonBorder = 1
-		teamTextWidth = 256
-		scoreTextWidth = 100
-		gameStatusTextWidth = 100
+class CreateMenu:
+	def __init__(self):
+		
+		
+		pygame.display.set_caption(globals.title + ' > Today\'s Games')
+		
+		displayWidth, displayHeight = pygame.display.get_surface().get_size()
+		#menuItemsSurface = pygame.Surface((int(displayWidth), int(displayHeight)))
 
 # ---------------------------------------------------------------------
 		
-		buttonStyle = ttk.Style()
-		buttonStyle.configure('bold.TButton', foreground='#000000', background = '#FFFFFF', bordercolor = '#FFFFFF', borderwidth=0, font=('Helvetica', 16, 'bold'))	
-		buttonStyle.configure('light.TButton', foreground='#888888', background = '#FFFFFF', bordercolor = '#FFFFFF', color='#888888', borderwidth=0, font=('Helvetica', 12))	
-		buttonStyle.configure('default.TButton', foreground='#000000', background = '#FFFFFF', bordercolor = '#FFFFFF', borderwidth=0, font=('Helvetica', 12))	
-		buttonStyle.configure('score.TButton', foreground='#000000', background = '#FFFFFF', bordercolor = '#FFFFFF', borderwidth=0, font=('Helvetica', 20, 'bold'))	
-		buttonStyle.map('default.Tbutton', background=[('!active', '#FFFFFF')])
+		defaultFont = pygame.font.SysFont('Helvetica', 16, bold=False)
+		teamNameFont = pygame.font.SysFont('Helvetica', 18, bold=True)
+		scoreFont = pygame.font.SysFont('Helvetica', 30, bold=True)
+		
 	
-# ---------------------------------------------------------------------
-		self.canvas = tk.Canvas(self, bg = '#000000', width = globals.screenWidth, height = globals.screenHeight)
+# ---------------------------------------------------------------------		
 		
-		self.image = Image.open(os.path.join(globals.homePath, 'images/menu-background.jpg'))
-		self.splashScreenImage = ImageTk.PhotoImage(self.image)
-		self.canvas.create_image(0, 0, anchor='nw', image=self.splashScreenImage)
-		self.canvas.pack()
+		while globals.gameSelected == False: 
 			
+			backgroundImagePath = os.path.join(globals.homePath, 'images/menu-background.jpg')
+			backgroundImage = pygame.image.load(backgroundImagePath)
+			globals.displaySurface.blit(backgroundImage, (0, 0))
+
+			# ---------------------------------------------------------------------
+
+			padding = 72
+			x = padding
+			y = padding 
+			desiredColumns = 3
+			thumbnailWidth = 64
+			thumbnailHeight = 64
+			cellPadding = 10
+			buttonWidth = int(((globals.screenWidth - x) / desiredColumns) - y) 
+			buttonHeight = int(thumbnailHeight * 2)
+			teamTextWidth = 256
+			scoreTextWidth = 100
+
+			# ---------------------------------------------------------------------
 			
-		for item in menuItems:
-			self.childFrame = tk.Frame(self.canvas, width=(buttonWidth - padding), height=buttonHeight, bg='#888888')
-
-# ---------------------------------------------------------------------
-
-			self.awayLogo = imageUtils.webImage(item.away.logo)
-			self.awayLogoImageFile = Image.open(self.awayLogo)
-			self.awayLogoImageFile = self.awayLogoImageFile.resize((thumbnailWidth - 20, thumbnailHeight - 20), Image.ANTIALIAS) 
-			self.awayLogoImage = ImageTk.PhotoImage(self.awayLogoImageFile, format='png', width=thumbnailWidth, height=thumbnailHeight)
-			self.awayLogoButton = ttk.Button(self.childFrame, compound=tk.CENTER, image=self.awayLogoImage, command=lambda link=item.link: selectGame(link))
-			self.awayLogoButton['style'] = 'default.TButton'
-			self.awayLogoButton.place(x=0, y=0, width=thumbnailWidth, height=thumbnailHeight)
-			self.tk_images.append(self.awayLogoImage)
-
-			self.awayNameButton = ttk.Button(self.childFrame, text=item.away.name, command=lambda link=item.link: selectGame(link))
-			self.awayNameButton['style'] = 'bold.TButton'
-			self.awayNameButton.place(x=thumbnailWidth, y=0, height=buttonHeight/2, width=teamTextWidth)
-			
-			
-# ---------------------------------------------------------------------
-
-			self.homeLogo = imageUtils.webImage(item.home.logo)
-			self.homeLogoImageFile = Image.open(self.homeLogo)
-			self.homeLogoImageFile = self.homeLogoImageFile.resize((thumbnailWidth - 16, thumbnailHeight - 16), Image.ANTIALIAS) 
-			self.homeLogoImage = ImageTk.PhotoImage(self.homeLogoImageFile, format='png', width=thumbnailWidth, height=thumbnailHeight)
-			self.homeLogoButton = ttk.Button(self.childFrame, compound=tk.CENTER, image=self.homeLogoImage, command=lambda link=item.link: selectGame(link))
-			self.homeLogoButton['style'] = 'default.TButton'
-			self.homeLogoButton.place(x=0, y=thumbnailHeight, width=thumbnailWidth, height=thumbnailHeight)
-			self.tk_images.append(self.homeLogoImage)
-
-			self.homeNameButton = ttk.Button(self.childFrame, text=item.home.name, command=lambda link=item.link: selectGame(link))
-			self.homeNameButton['style'] = 'bold.TButton'
-			self.homeNameButton.place(x=thumbnailWidth, y=thumbnailHeight, height=buttonHeight/2, width=teamTextWidth)
-
-# ---------------------------------------------------------------------	
-			
-			if item.status.code == 'I' or item.status.code == 'F':
-				self.awayScoreButton = ttk.Button(self.childFrame, text=str(item.away.runs), command=lambda link=item.link: selectGame(link))
-				self.awayScoreButton['style'] = 'score.TButton'
-				self.awayScoreButton.place(x=thumbnailWidth + teamTextWidth, y=0, height=buttonHeight/2, width = scoreTextWidth)
-				
-				self.homeScoreButton = ttk.Button(self.childFrame, text=str(item.home.runs), command=lambda link=item.link: selectGame(link))
-				self.homeScoreButton['style'] = 'score.TButton'
-				self.homeScoreButton.place(x=thumbnailWidth + teamTextWidth, y=thumbnailHeight, height=buttonHeight/2, width = scoreTextWidth)
-				
+			menuItems = Data.getSchedule().games
+			if len(menuItems) == 0:
+				print('Awaiting game data...')
 			else:
-				self.awayWinLossButton = ttk.Button(self.childFrame, text=str(item.away.wins) + ' - ' + str(item.away.losses), command=lambda link=item.link: selectGame(link))
-				self.awayWinLossButton['style'] = 'light.TButton'
-				self.awayWinLossButton.place(x=thumbnailWidth + teamTextWidth, y=0, height=buttonHeight/2, width = scoreTextWidth)
-				
-				self.homeWinLossButton = ttk.Button(self.childFrame, text=str(item.home.wins) + ' - ' + str(item.home.losses), command=lambda link=item.link: selectGame(link))
-				self.homeWinLossButton['style'] = 'light.TButton'
-				self.homeWinLossButton.place(x=thumbnailWidth + teamTextWidth, y=thumbnailHeight, height=buttonHeight/2, width = scoreTextWidth)
-				
-# ---------------------------------------------------------------------
-			
-			lastColumnStart = thumbnailWidth + teamTextWidth + scoreTextWidth + 1
-			lastColumnWidth = buttonWidth - thumbnailWidth - teamTextWidth - scoreTextWidth - padding - 1
-			if item.status.code == 'F':
-				# FINAL Indicator
-				self.gameStatusButton = ttk.Button(self.childFrame, text='Final', command=lambda link=item.link: selectGame(link))
-				self.gameStatusButton['style'] = 'default.TButton'
-				self.gameStatusButton.place(x=lastColumnStart, y=0, width=lastColumnWidth, height=buttonHeight)
-			elif item.status.code == 'I':
-				# Inning
-				
-				if (item.inningHalf == 'bottom'):
-					inningIndicator = u"\u25BC " + str(item.inning)
-				else:
-					inningIndicator = u"\u25B2 " + str(item.inning)
-				self.gameStatusButton = ttk.Button(self.childFrame, text=inningIndicator, command=lambda link=item.link: selectGame(link))
-				self.gameStatusButton['style'] = 'default.TButton'
-				self.gameStatusButton.place(x=lastColumnStart, y=0, width=lastColumnWidth, height=buttonHeight/4)
-				
-				# Base Pattern
-				basePatternHeight = int(buttonHeight/2) - 10
-				basePatternWidth = int(basePatternHeight * 1.5)
-				print(item.basePattern)
-				self.basePatternImageFile = Image.open(os.path.join(globals.homePath, 'images/bases/', item.basePattern + '.png'))
-				self.basePatternImageFile = self.basePatternImageFile.resize((basePatternWidth, basePatternHeight), Image.ANTIALIAS) 
-				self.basePatternImage = ImageTk.PhotoImage(self.basePatternImageFile, format='png', width=basePatternWidth, height=basePatternHeight)
-				self.basePatternButton = ttk.Button(self.childFrame, compound=tk.CENTER, image=self.basePatternImage, command=lambda link=item.link: selectGame(link))
-				self.basePatternButton['style'] = 'default.TButton'
-				self.basePatternButton.place(x=lastColumnStart, y=buttonHeight/4, width=lastColumnWidth, height=buttonHeight/2)
-				self.tk_images.append(self.basePatternImage)
+				if len(menuItems) > 12:
+					y = y/2
+				for item in menuItems:
+					itemX = x
+					itemY = y
+					itemYAlt = y + thumbnailHeight
 
-				# Outs
-				outHeight = int(buttonHeight/4) - 10
-				outWidth = int(outHeight * 3)
-				self.outImageFile = Image.open(os.path.join(globals.homePath, 'images/outs/', str(item.outs) + '.png'))
-				self.outImageFile = self.outImageFile.resize((outWidth, outHeight), Image.ANTIALIAS) 
-				self.outImage = ImageTk.PhotoImage(self.outImageFile, format='png', width=outWidth, height=outHeight)
-				self.outButton = ttk.Button(self.childFrame, compound=tk.CENTER, image=self.outImage, command=lambda link=item.link: selectGame(link))
-				self.outButton['style'] = 'default.TButton'
-				self.outButton.place(x=lastColumnStart, y=(buttonHeight/4 * 3), width=lastColumnWidth, height=buttonHeight/4)
-				self.tk_images.append(self.outImage)
-			else:
-				# Standings
-				self.gameStatusButton = ttk.Button(self.childFrame, text=item.time + ' ' + str(item.timezone), command=lambda link=item.link: selectGame(link))
-				self.gameStatusButton['style'] = 'default.TButton'
-				self.gameStatusButton.place(x=lastColumnStart, y=0, width=lastColumnWidth, height=buttonHeight)
-			
-# ---------------------------------------------------------------------
+					gameRectangle = pygame.draw.rect(globals.displaySurface, (255, 255, 255), [itemX, itemY, buttonWidth, buttonHeight])
+					#for event in pygame.event.get():
+						#if event.type == 1:
+							#print(pygame.mouse.get_pos())
+							#if gameRectangle.collidepoint():
+							#	print('Clicked', item.away.name)
 					
-				
-				
-			self.childFrame.bind("<Return>", lambda event, link=item.link: selectGame(link))
-			self.childFrame.focus_set()
+					
 
-			self.childFrame.place(x = x, y = y)
+					# ---------------------------------------------------------------------
+
+					columnStart = itemX + cellPadding + 6
+
+					awayLogoPath = imageUtils.webImage(item.away.logo)
+					awayLogo = pygame.image.load(awayLogoPath)
+					awayLogo = pygame.transform.smoothscale(awayLogo, (thumbnailWidth - (cellPadding*2), thumbnailHeight - (cellPadding*2)))
+					globals.displaySurface.blit(awayLogo, (columnStart, itemY + cellPadding))
+
+					homeLogoPath = imageUtils.webImage(item.home.logo)
+					homeLogo = pygame.image.load(homeLogoPath)
+					homeLogo = pygame.transform.smoothscale(homeLogo, (thumbnailWidth - (cellPadding*2), thumbnailHeight - (cellPadding*2)))
+					globals.displaySurface.blit(homeLogo, (columnStart, itemYAlt + cellPadding))
+					
+					# ---------------------------------------------------------------------
+					
+					columnStart = itemX + thumbnailWidth + cellPadding + 6
+
+					awayText = teamNameFont.render(item.away.name, True, (0, 0, 0))
+					globals.displaySurface.blit(awayText, (columnStart, itemY + 20))
+
+					homeText = teamNameFont.render(item.home.name, True, (0, 0, 0))
+					globals.displaySurface.blit(homeText, (columnStart, itemYAlt + 20 ))
+
+					# ---------------------------------------------------------------------
+					
+					columnStart = itemX + thumbnailWidth + teamTextWidth
+
+					if item.status.code == 'I' or item.status.code == 'F':
+						awayScoreText = scoreFont.render(str(item.away.runs), True, (0, 0, 0))
+						globals.displaySurface.blit(awayScoreText, (columnStart, itemY + 14 ))
+
+						homeScoreText = scoreFont.render(str(item.home.runs), True, (0, 0, 0))
+						globals.displaySurface.blit(homeScoreText, (columnStart, itemYAlt + 14 ))
+					else:
+						awayWinLossText = defaultFont.render(str(item.away.wins) + ' - ' + str(item.away.losses), True, (128, 128, 128))
+						globals.displaySurface.blit(awayWinLossText, (columnStart, itemY + 22 ))
+
+						homeWinLossText = defaultFont.render(str(item.home.wins) + ' - ' + str(item.home.losses), True, (128, 128, 128))
+						globals.displaySurface.blit(homeWinLossText, (columnStart, itemYAlt + 22 ))
+					
+					# ---------------------------------------------------------------------
+						
+					columnStart = itemX + thumbnailWidth + teamTextWidth + scoreTextWidth
+
+					if item.status.code == 'F':
+						# FINAL Indicator
+						finalText = scoreFont.render('Final', True, (0, 0, 0))
+						globals.displaySurface.blit(finalText, (columnStart, itemYAlt - 10 ))
+					elif item.status.code == 'I':
+						
+						# Base Pattern
+						
+						basePatternImagePath = os.path.join(globals.homePath, 'images/bases/', item.basePattern + '.png')
+						basePatternImage = pygame.image.load(basePatternImagePath)
+						basePatternImage = pygame.transform.smoothscale(basePatternImage, (90, 60))
+						globals.displaySurface.blit(basePatternImage, (columnStart, itemY + 10))
+
+						# Inning
+						if (item.inningHalf == 'top'):
+							inningIndicator = u"\u25B2 " + str(item.inning)
+						elif (item.inningHalf == 'bottom'):
+							inningIndicator = u"\u25BC " + str(item.inning)
+						else:
+							inningIndicator = u"\u2013 " + str(item.inning)
+
+						inningText = defaultFont.render(inningIndicator, True, (0, 0, 0))
+						globals.displaySurface.blit(inningText, (columnStart + 33, itemY + 65 ))
+						
+					
+						# Outs
+						outImagePath = os.path.join(globals.homePath, 'images/outs/', str(item.outs) + '.png')
+						outImage = pygame.image.load(outImagePath)
+						outImage = pygame.transform.smoothscale(outImage, (90, 30))
+						globals.displaySurface.blit(outImage, (columnStart, itemY + 88))
 			
-			if (x == (globals.screenWidth - buttonWidth)):
-				x = 0
-				y = y + buttonHeight
-			else:
-				x = x + buttonWidth
-			#print(x, y)
+					else:
+						# Start Time
+						startTimeText = defaultFont.render(item.time + ' ' + str(item.timezone), True, (0, 0, 0))
+						globals.displaySurface.blit(startTimeText, (columnStart, itemYAlt - 10 ))
+
+
+					if (x >= buttonWidth * (desiredColumns - 1)):	
+						x = padding
+						y = itemY + buttonHeight + padding
+					else:
+						x = itemX + buttonWidth + padding
+					#print('X:', x, 'Y:', y)
+
+				pygame.display.flip()
+				time.sleep(5)		
+				
+
+# ---------------------------------------------------------------------
+
+		def menuButton(item, x, y, w, h, action=None):
+			mousePositon = pygame.mouse.get_pos()
+			click = pygame.mouse.get_pressed() 
+			print(click)
+
+# ---------------------------------------------------------------------
 
 		def selectGame(link):
 			globals.gamesSelected = True

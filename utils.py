@@ -42,5 +42,5 @@ class Image:
 	
 	def svgToPNG(inputFile):
 		outputFile = inputFile.replace('.svg', '.png')
-		cairosvg.svg2png(url=inputFile, write_to=outputFile)
+		cairosvg.svg2png(url=inputFile, write_to=outputFile, output_width=256, output_height=256)
 		return outputFile
