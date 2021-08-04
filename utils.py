@@ -33,6 +33,7 @@ class Image:
 			opener = urllib.request.build_opener()
 			opener.addheaders=[('User-Agent','Baseball Pi')]
 			urllib.request.install_opener(opener)
+			#print(imageUrl)
 			urllib.request.urlretrieve(imageUrl, inputFile)
 		if inputFile.endswith('.svg') and os.path.exists(outputFile) == False:
 			outputFile = Image.svgToPNG(inputFile)

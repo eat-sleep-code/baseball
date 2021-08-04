@@ -166,6 +166,8 @@ class Data:
 					currentPlay.home.winner = False
 			else: 
 				currentPlay.home.winner = False
+			currentPlay.away.teamId = playData['gameData']['teams']['away']['id']
+			currentPlay.away.location = 'away'
 			currentPlay.away.name = playData['gameData']['teams']['away']['name']
 			currentPlay.away.abbreviation = playData['gameData']['teams']['away']['abbreviation']
 			currentPlay.away.logo = logoUrl.replace('[TEAMID]', str(currentPlay.away.teamId))
