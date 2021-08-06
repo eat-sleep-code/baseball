@@ -1,7 +1,7 @@
 # This script will install the Baseball application and any required prerequisites.
 cd ~
 echo -e ''
-echo -e '\033[32mCamera [Baseball] \033[0m'
+echo -e '\033[32mBaseball \033[0m'
 echo -e '\033[32m-------------------------------------------------------------------------- \033[0m'
 echo -e ''
 echo -e '\033[93mUpdating package repositories... \033[0m'
