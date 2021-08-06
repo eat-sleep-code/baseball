@@ -26,8 +26,11 @@ class Image:
 			os.remove(globals.imageCache + file)
 
 
-	def webImage(imageUrl):
-		inputFile = globals.imageCache + imageUrl.split('/')[-1]
+	def webImage(imageUrl, filename=''):
+		if filename == '':
+			inputFile = globals.imageCache + imageUrl.split('/')[-1]
+		else:
+			inputFile = globals.imageCache + filename
 		outputFile = inputFile.replace('.svg', '.png')
 		if os.path.exists(inputFile) == False:
 			opener = urllib.request.build_opener()

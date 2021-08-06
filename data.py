@@ -213,6 +213,7 @@ class Data:
 				pass
 			
 			currentPlay.bases = Data.getBaseStatus(playData['liveData']['plays']['currentPlay']['runners'])
+						
 			return currentPlay
 
 # ---------------------------------------------------------------------

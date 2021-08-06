@@ -26,7 +26,7 @@ class ViewGame():
 # ---------------------------------------------------------------------
 
 		cellPadding = 10	
-		columnLeftStart = 20
+		columnLeftStart = 50
 		columnRightStart = 1600
 		itemY = 20
 		refreshCount = 0
@@ -37,6 +37,12 @@ class ViewGame():
 			item = Data.getCurrentPlay(globals.gameLink)   
 			pygame.display.set_caption(globals.title + ' > ' + item.away.name + ' @ ' + item.home.name)
 			
+
+
+			# =================================================================
+
+
+
 			# AWAY SCORE
 			awayLogoPath = imageUtils.webImage(item.away.logo)
 			awayLogo = pygame.image.load(awayLogoPath)
@@ -47,6 +53,7 @@ class ViewGame():
 			awayScoreText = scoreFont.render(str(item.away.runs), True, (0, 0, 0))
 			globals.displaySurface.blit(awayScoreText, (columnLeftStart, itemY + thumbnailHeight + 20 ))
 
+
 			# HOME SCORE
 			homeLogoPath = imageUtils.webImage(item.home.logo)
 			homeLogo = pygame.image.load(homeLogoPath)
@@ -56,36 +63,47 @@ class ViewGame():
 			homeScoreText = scoreFont.render(str(item.home.runs), True, (0, 0, 0))
 			globals.displaySurface.blit(homeScoreText, (columnRightStart, itemY + thumbnailHeight + 20 ))
 				
-
 		
+
+			# =================================================================
+
+
+
+			if currentPlay.inningHalf == 'bottom':
+				columnPitchingStart = columnRightStart
+				columnBattingStart = columnLeftStart
+			else:
+				columnPitchingStart = columnLeftStart
+				columnBattingStart = columnRightStart
+
+
 			# PITCHING
-			#item.pitcher.playerId
-			#item.pitcher.link
 			pitcherNameText = defaultFont.render(str(item.pitcher.name), True, (0, 0, 0))
-			globals.displaySurface.blit(pitcherNameText, (columnLeftStart, itemY + thumbnailHeight + 60 ))
+			globals.displaySurface.blit(pitcherNameText, (columnPitchingStart, itemY + thumbnailHeight + 60 ))
 			
-			pitcherPortraitPath = imageUtils.webImage(item.pitcher.portrait)
+			pitcherPortraitPath = imageUtils.webImage(item.pitcher.portrait, 'player-' + str(item.pitcher.playerId))
 			pitcherPortrait = pygame.image.load(pitcherPortraitPath)
-			globals.displaySurface.blit(pitcherPortrait, (columnLeftStart, itemY + thumbnailHeight + 80 ))
+			globals.displaySurface.blit(pitcherPortrait, (columnPitchingStart, itemY + thumbnailHeight + 80 ))
 			
 			pitcherPitchesText = defaultFont.render(str(item.pitcher.pitches), True, (0, 0, 0))
-			globals.displaySurface.blit(pitcherPitchesText, (columnLeftStart, itemY + thumbnailHeight + 400 ))
+			globals.displaySurface.blit(pitcherPitchesText, (columnPitchingStart, itemY + thumbnailHeight + 400 ))
 			
-
 
 			# BATTING
-			#item.batter.playerId
-			#item.batter.link
 			batterNameText = defaultFont.render(str(item.batter.name), True, (0, 0, 0))
-			globals.displaySurface.blit(batterNameText, (columnRightStart, itemY + thumbnailHeight + 60 ))
+			globals.displaySurface.blit(batterNameText, (columnBattingStart, itemY + thumbnailHeight + 60 ))
 			
-			batterPortraitPath = imageUtils.webImage(item.batter.portrait)
+			batterPortraitPath = imageUtils.webImage(item.batter.portrait, 'player-' + str(item.batter.playerId))
 			batterPortrait = pygame.image.load(batterPortraitPath)
-			globals.displaySurface.blit(batterPortrait, (columnRightStart, itemY + thumbnailHeight + 80 ))
+			globals.displaySurface.blit(batterPortrait, (columnBattingStart, itemY + thumbnailHeight + 80 ))
 			
 			batterBatsText = defaultFont.render(str(item.batter.bats), True, (0, 0, 0))
-			globals.displaySurface.blit(batterBatsText, (columnRightStart, itemY + thumbnailHeight + 400 ))
+			globals.displaySurface.blit(batterBatsText, (columnBattingStart, itemY + thumbnailHeight + 400 ))
 			
+
+
+			# =================================================================
+
 
 
 			print(item.status.description)

@@ -77,6 +77,7 @@ class Player(object):
         self.portrait = ''
         self.bats = ''
         self.pitches = ''
+        self.teamId = 0
 
 # ---------------------------------------------------------------------
 

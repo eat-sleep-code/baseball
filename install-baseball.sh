@@ -9,8 +9,8 @@ sudo apt update
 
 echo ''
 echo -e '\033[93mInstalling prerequisites... \033[0m'
-sudo apt install -y git python3 python3-pip python3-picamera python-tk
-sudo pip3 install cairosvg --force
+sudo apt install -y git python3 python3-pip libsdl2-image-2.0-0 libsdl2-ttf-2.0-0
+sudo pip3 install cairosvg pygame==2.0.1 --force
 
 echo ''
 echo -e '\033[93mInstalling Baseball... \033[0m'
